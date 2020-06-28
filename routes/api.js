@@ -57,27 +57,30 @@ async function registerAccount(options, ip) {
         },
         extensions: []
     };
-    /*
-    let tx = acc.newTx()
-    tx.account_create(params)
-    try {
-        let txResult = await tx.broadcast()
-        console.log('tx Result', txResult[0].trx)
-        if (txResult[0].id) {
-            result = {
-                "status": "Account created",
-                "account": {
-                    "name": options.name,
-                    "owner_key": options.owner,
-                    "active_key": options.active,
-                    "memo_key": options.memo,
+
+    if (config.bts.broadcastTx) {
+        let tx = acc.newTx()
+        tx.account_create(params)
+        try {
+            let txResult = await tx.broadcast()
+            console.log('tx Result', txResult[0].trx)
+            if (txResult[0].id) {
+                result = {
+                    "status": "Account created",
+                    "account": {
+                        "name": options.name,
+                        "owner_key": options.owner,
+                        "active_key": options.active,
+                        "memo_key": options.memo,
+                    }
                 }
             }
+        } catch (e) {
+            console.log('e', e)
         }
-    } catch (e) {
-        console.log('e', e)
+    } else {
+        result.status = "Broadcast Tx off"
     }
-     */
     return result
 }
 
