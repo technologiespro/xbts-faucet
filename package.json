@@ -18,6 +18,14 @@
     "type": "git",
     "url": "git://github.com/technologiespro/xbts-faucet"
   },
+  "keywords": [
+    "nodejs",
+    "bitshares",
+    "xbts",
+    "faucet",
+    "bts",
+    "registration"
+  ],
   "scripts": {
     "start": "node ./bin/www"
   },
