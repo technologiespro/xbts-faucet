@@ -72,6 +72,13 @@ async function registerAccount(options) {
     return result
 }
 
+//test ip
+router.get('/ip', async function (req, res, next) {
+    let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    await res.json({
+        ip: ip
+    })
+})
 
 router.post('/v1/accounts', async function (req, res, next) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
