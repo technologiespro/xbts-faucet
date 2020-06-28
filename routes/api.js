@@ -5,6 +5,8 @@ const JsonFile = require('jsonfile')
 const level = require('level')
 const config = JsonFile.readFileSync('./config.json')
 const db = level('.faucet', {valueEncoding: 'json'})
+const DbUtils = require('../modules/dbUtils')
+const dbu = new DbUtils()
 let acc = null
 let latestRegs = {}
 
@@ -119,5 +121,9 @@ router.post('/v1/accounts', async function (req, res, next) {
     console.log(result)
     await res.json(result)
 });
+
+router.post('/v1/registrations', async function (req, res, next) {
+    await res.json(await dbu.dbArray(db, '0','1'))
+})
 
 module.exports = router;
