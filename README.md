@@ -44,3 +44,38 @@ save and exit from nano editor: CTRL+O, CTRL+X
 `npm start` for testing
 
 `sh restart.sh` for background running
+
+## Nginx Setup
+
+`sudo apt install nginx`
+
+`cd /etc/nginx/sites-available`
+
+`sudo nano faucet`
+
+- insert config
+
+```
+server {
+        listen 80;
+        listen 443 ssl;
+        server_name faucet.yoursite.com;
+        location / {
+        proxy_pass http://localhost:48887;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+       }
+}
+
+```
+
+- save settings: CTRL+O, CTRL+X
+- `sudo ln -s /etc/nginx/sites-available/faucet /etc/nginx/sites-enabled/faucet`
+- `sudo nginx -t`
+- `sudo service nginx restart`
+- for ssl install nginx certbot, instruction here https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx

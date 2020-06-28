@@ -57,6 +57,7 @@ async function registerAccount(options, ip) {
         },
         extensions: []
     };
+    /*
     let tx = acc.newTx()
     tx.account_create(params)
     try {
@@ -76,18 +77,19 @@ async function registerAccount(options, ip) {
     } catch (e) {
         console.log('e', e)
     }
+     */
     return result
 }
 
 //test ip
-router.get('/ip', async function (req, res, next) {
+router.get('/v1/ip', async function (req, res, next) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     await res.json({
         ip: ip,
     })
 })
 
-router.get('/latest', async function (req, res, next) {
+router.get('/v1/latest', async function (req, res, next) {
     await res.json(latestRegs)
 })
 
