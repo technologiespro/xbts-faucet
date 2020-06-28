@@ -1,7 +1,23 @@
 {
   "name": "xbts-faucet",
   "version": "0.0.1",
+  "description": "NodeJS BitShares Faucet",
+  "author": "technologiespro",
+  "homepage": "https://github.com/technologiespro/xbts-faucet",
+  "contributors": [
+    "technologiespro"
+  ],
   "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=10.x",
+    "npm": ">=6.x",
+    "yarn": ">=0.21.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/technologiespro/xbts-faucet"
+  },
   "scripts": {
     "start": "node ./bin/www"
   },
