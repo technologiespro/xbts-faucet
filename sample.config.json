@@ -6,6 +6,7 @@
     "password": "",
     "default_referrer": "xbtsx",
     "referrer_percent": 50,
-    "core_asset": "BTS"
+    "core_asset": "BTS",
+    "timeoutIp": 3600
   }
 }
