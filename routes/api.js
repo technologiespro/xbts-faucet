@@ -15,6 +15,12 @@ async function startAfterConnected() {
 }
 
 async function registerAccount(options, ip) {
+    latestRegs[ip] = {
+        time: new Date.now(),
+        name: options.name,
+    }
+
+
     let result = {
         "status": "Error registration account",
         "account": {
@@ -57,10 +63,6 @@ async function registerAccount(options, ip) {
         let txResult = await tx.broadcast()
         console.log('tx Result', txResult[0].trx)
         if (txResult[0].id) {
-            latestRegs[ip] = {
-                time: new Date.now(),
-                name: options.name,
-            }
             result = {
                 "status": "Account created",
                 "account": {
@@ -82,8 +84,11 @@ router.get('/ip', async function (req, res, next) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     await res.json({
         ip: ip,
-        latestRegs: latestRegs,
     })
+})
+
+router.get('/latest', async function (req, res, next) {
+    await res.json(latestRegs)
 })
 
 router.post('/v1/accounts', async function (req, res, next) {
