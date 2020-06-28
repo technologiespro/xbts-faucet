@@ -7,6 +7,11 @@ const config = JsonFile.readFileSync('./config.json')
 const db = level('.faucet', {valueEncoding: 'json'})
 const DbUtils = require('../modules/dbUtils')
 const dbu = new DbUtils()
+
+// db
+// 0x - reserved for counters
+// 1x - success registrations
+
 let acc = null
 let latestRegs = {}
 
@@ -78,7 +83,7 @@ async function registerAccount(options, ip) {
                         "memo_key": options.memo,
                     }
                 }
-                await db.put('0x' + options.name, {
+                await db.put('1x' + options.name, {
                     "name": options.name,
                     "time": new Date.now(),
                 })
@@ -123,7 +128,7 @@ router.post('/v1/accounts', async function (req, res, next) {
 });
 
 router.post('/v1/registrations', async function (req, res, next) {
-    await res.json(await dbu.dbArray(db, '0','1'))
+    await res.json(await dbu.dbArray(db, '1','2'))
 })
 
 module.exports = router;
