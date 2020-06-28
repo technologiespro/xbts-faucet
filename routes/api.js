@@ -3,14 +3,18 @@ const router = express.Router()
 const BitShares = require('btsdex')
 const JsonFile = require('jsonfile')
 const config = JsonFile.readFileSync('./config.json')
-
+let acc = null
 BitShares.connect(config.bts.node, startAfterConnected);
 
 async function startAfterConnected() {
-
+    acc = await BitShares.login(config.bts.account, config.bts.password)
+    console.log('acc', acc)
 }
 
 async function registerAccount(options) {
+    let result
+
+    return result
 
 }
 
