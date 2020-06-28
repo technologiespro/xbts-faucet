@@ -24,8 +24,8 @@ async function registerAccount(options) {
         owner: {
             weight_threshold: 1,
             account_auths: [],
-            key_auths: [[, 1]],
-            address_auths: [options.owner]
+            key_auths: [[options.owner, 1]],
+            address_auths: []
         },
         active: {
             weight_threshold: 1,
@@ -44,9 +44,10 @@ async function registerAccount(options) {
     };
 
     let tx = acc.newTx()
-    tx.account_create(params) // 'account_create' это имя операции
+    tx.account_create(params)
     try {
-        await tx.broadcast()
+        let txResult = await tx.broadcast()
+        console.log('txResult', txResult)
         result = {
             "status": "Account created",
             "account": {
@@ -56,7 +57,7 @@ async function registerAccount(options) {
                 "memo_key": options.memo,
             }
         }
-    } catch(e) {
+    } catch (e) {
         result = e
     }
 
@@ -74,6 +75,7 @@ router.post('/v1/accounts', async function (req, res, next) {
             owner: req.body.account.owner_key,
             active: req.body.account.active_key,
             memo: req.body.account.memo_key,
+            referrer: req.body.account.referrer,
         })
     }
     await res.json(result)
