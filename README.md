@@ -38,3 +38,9 @@ Set
 - bts.referrer_percent - referrer percent
 
 save and exit from nano editor: CTRL+O, CTRL+X
+
+## Start
+
+`npm start` for testing
+
+`sh restart.sh` for background running
