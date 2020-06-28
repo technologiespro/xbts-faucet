@@ -2,7 +2,9 @@ const express = require('express')
 const router = express.Router()
 const BitShares = require('btsdex')
 const JsonFile = require('jsonfile')
+const level = require('level')
 const config = JsonFile.readFileSync('./config.json')
+const db = level('.faucet', {valueEncoding: 'json'})
 let acc = null
 let latestRegs = {}
 
