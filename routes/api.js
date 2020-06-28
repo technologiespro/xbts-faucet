@@ -4,6 +4,7 @@ const BitShares = require('btsdex')
 const JsonFile = require('jsonfile')
 const config = JsonFile.readFileSync('./config.json')
 let acc = null
+let latestRegs = {}
 
 BitShares.connect(config.bts.node);
 BitShares.subscribe('connected', startAfterConnected);
@@ -13,7 +14,7 @@ async function startAfterConnected() {
     console.log('registrar', acc.account.id, acc.account.name)
 }
 
-async function registerAccount(options) {
+async function registerAccount(options, ip) {
     let result = {
         "status": "Error registration account",
         "account": {
@@ -56,6 +57,10 @@ async function registerAccount(options) {
         let txResult = await tx.broadcast()
         console.log('tx Result', txResult[0].trx)
         if (txResult[0].id) {
+            latestRegs[ip] = {
+                time: new Date.now(),
+                name: options.name,
+            }
             result = {
                 "status": "Account created",
                 "account": {
@@ -76,7 +81,8 @@ async function registerAccount(options) {
 router.get('/ip', async function (req, res, next) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     await res.json({
-        ip: ip
+        ip: ip,
+        latestRegs: latestRegs,
     })
 })
 
@@ -92,7 +98,7 @@ router.post('/v1/accounts', async function (req, res, next) {
             active: req.body.account.active_key,
             memo: req.body.account.memo_key,
             referrer: req.body.account.referrer,
-        })
+        }, ip)
     }
     console.log(result)
     await res.json(result)
