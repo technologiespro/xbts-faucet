@@ -2,7 +2,7 @@
 
 The faucet is used to pay the registration fee for new users.
 
-## NodeJS Setup
+## NodeJS Setup (if necessary)
 
 ```
 sudo apt-get install build-essential g++ python git curl ntp htop nmon iftop nano -y
