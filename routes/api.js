@@ -76,6 +76,10 @@ async function registerAccount(options, ip) {
                         "memo_key": options.memo,
                     }
                 }
+                await db.put('0x' + options.name, {
+                    "name": options.name,
+                    "time": new Date.now(),
+                })
             }
         } catch (e) {
             console.log('e', e)
