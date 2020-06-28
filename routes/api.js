@@ -14,7 +14,15 @@ async function startAfterConnected() {
 }
 
 async function registerAccount(options) {
-    let result
+    let result = {
+        "status": "Error registration account",
+        "account": {
+            "name": options.name,
+            "owner_key": options.owner,
+            "active_key": options.active,
+            "memo_key": options.memo,
+        }
+    }
     let params = {
         fee: {amount: 0, asset_id: "1.3.0"},
         name: options.name,
@@ -48,17 +56,20 @@ async function registerAccount(options) {
     try {
         let txResult = await tx.broadcast()
         console.log('txResult', txResult)
-        result = {
-            "status": "Account created",
-            "account": {
-                "name": options.name,
-                "owner_key": options.owner,
-                "active_key": options.active,
-                "memo_key": options.memo,
+        if (txResult[0].id) {
+            result = {
+                "status": "Account created",
+                "account": {
+                    "name": options.name,
+                    "owner_key": options.owner,
+                    "active_key": options.active,
+                    "memo_key": options.memo,
+                }
             }
         }
+
     } catch (e) {
-        result = e
+        console.log('e', e)
     }
 
     return result
