@@ -24,5 +24,17 @@ npm install
 
 ## Settings
 ```
-mv
+mv sample.config.json config.json
+nano config.json
 ```
+
+Set
+
+- port - app port number up to 65535
+- bts.node - public bitshares node
+- bts.registrar - registrar account
+- bts.password - registrar account password
+- bts.default_referrer - default referrer account name
+- bts.referrer_percent - referrer percent
+
+save and exit from nano editor: CTRL+O, CTRL+X
