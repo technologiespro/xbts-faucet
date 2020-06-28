@@ -50,12 +50,11 @@ async function registerAccount(options) {
         },
         extensions: []
     };
-
     let tx = acc.newTx()
     tx.account_create(params)
     try {
         let txResult = await tx.broadcast()
-        console.log('txResult', txResult)
+        console.log('tx Result', txResult[0].trx)
         if (txResult[0].id) {
             result = {
                 "status": "Account created",
@@ -67,18 +66,17 @@ async function registerAccount(options) {
                 }
             }
         }
-
     } catch (e) {
         console.log('e', e)
     }
-
     return result
-
 }
 
 
 router.post('/v1/accounts', async function (req, res, next) {
-    console.log('post', req.body)
+    let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    console.log('ip', ip)
+    // console.log('post', req.body)
     let result = false
     if (req.body.account) {
         result = await registerAccount({
@@ -89,6 +87,7 @@ router.post('/v1/accounts', async function (req, res, next) {
             referrer: req.body.account.referrer,
         })
     }
+    console.log(result)
     await res.json(result)
 });
 
