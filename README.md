@@ -19,6 +19,7 @@ npm install -g npm forever grunt-cli
 ```
 git clone https://github.com/technologiespro/xbts-faucet.git
 cd xbts-faucet
+npm install
 ```
 
 ## Settings

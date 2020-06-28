@@ -1,0 +1,11 @@
+{
+  "port": 48887,
+  "bts": {
+    "node": "wss://cloud.xbts.io/ws",
+    "registrar": "",
+    "password": "",
+    "default_referrer": "xbtsx",
+    "referrer_percent": 50,
+    "core_asset": "BTS"
+  }
+}
