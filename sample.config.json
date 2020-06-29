@@ -3,7 +3,7 @@
   "bts": {
     "node": "wss://cloud.xbts.io/ws",
     "registrar": "xbtsio-wallet",
-    "wif": "",
+    "wif": "your_private_active_key_here",
     "default_referrer": "xbtsio-wallet",
     "referrer_percent": 50,
     "core_asset": "BTS",
