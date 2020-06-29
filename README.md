@@ -88,5 +88,5 @@ server {
 
 - `GET https://faucet.xbts.io/api/v1/ip` - test get ip address
 - `POST https://faucet.xbts.io/api/v1/accounts` - register new account
-- 'GET https://faucet.xbts.io/api/v1/latest' - latest registrations
+- `GET https://faucet.xbts.io/api/v1/latest` - latest registrations
 
