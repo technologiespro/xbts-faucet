@@ -37,7 +37,7 @@ Set
 - bts.password - registrar account password
 - bts.default_referrer - default referrer account name
 - bts.referrer_percent - referrer percent
-- bts.broadcastTx - default true
+- bts.broadcastTx - default true, for testing set false
 
 save and exit from nano editor: CTRL+O, CTRL+X
 
