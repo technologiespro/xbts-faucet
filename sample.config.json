@@ -2,9 +2,9 @@
   "port": 48887,
   "bts": {
     "node": "wss://cloud.xbts.io/ws",
-    "registrar": "",
+    "registrar": "xbtsio-wallet",
     "wif": "",
-    "default_referrer": "xbtsx",
+    "default_referrer": "xbtsio-wallet",
     "referrer_percent": 50,
     "core_asset": "BTS",
     "timeoutIp": 1800,

@@ -170,6 +170,8 @@ router.post('/v1/accounts', async function (req, res, next) {
             memo: req.body.account.memo_key,
             referrer: req.body.account.referrer,
         }, hashIp)
+    } else {
+        result = {"error": {"base": ["Only standard accounts names allowed"]}}
     }
     //console.log(result)
     await res.json(result)
