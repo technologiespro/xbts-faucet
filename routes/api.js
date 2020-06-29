@@ -23,7 +23,7 @@ let referrer = "xbtsx"
 BitShares.connect(config.bts.node);
 BitShares.subscribe('connected', startAfterConnected);
 
-function is_cheap_name(account_name) {
+async function is_cheap_name(account_name) {
     return /[0-9-]/.test(account_name) || !/[aeiouy]/.test(account_name);
 }
 
@@ -38,10 +38,11 @@ async function startAfterConnected() {
     console.log('countRegs', countRegs)
 
     assetId = (await BitShares.assets[config.bts.core_asset]).id
-    console.log('assetId',assetId, config.bts.core_asset)
+    console.log('assetId', assetId, config.bts.core_asset)
 
     referrer = await BitShares.accounts[config.bts.default_referrer]
     console.log('default referrer', referrer.id, referrer.name)
+    console.log('premium names', config.bts.allowPremium)
 }
 
 async function registerAccount(options, ip) {
@@ -149,19 +150,26 @@ router.get('/v1/latest', async function (req, res, next) {
 router.post('/v1/accounts', async function (req, res, next) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     let hashIp = crypto.createHash('md5').update(ip).digest("hex");
-    console.log('ip', ip, hashIp)
+    // console.log('ip', ip, hashIp)
     // console.log('post', req.body)
     let result = false
-    if (req.body.account) {
+    let err = false
+    let name = (req.body.account.name).toLowerCase()
+
+    if (!config.bts.allowPremium) {
+        err = !(await is_cheap_name(name)) // is not cheap name = true
+    }
+
+    if (req.body.account && !err) {
         result = await registerAccount({
-            name: (req.body.account.name).toLowerCase(),
+            name: name,
             owner: req.body.account.owner_key,
             active: req.body.account.active_key,
             memo: req.body.account.memo_key,
             referrer: req.body.account.referrer,
         }, hashIp)
     }
-    console.log(result)
+    //console.log(result)
     await res.json(result)
 });
 
