@@ -90,7 +90,8 @@ server {
 
 ## API
 
-- `GET http://localhost:48887/api/v1/ip` - test get ip address
-- `POST http://localhost:48887/api/v1/accounts` - register new account
-- `GET http://localhost:48887/api/v1/latest` - latest registrations
-
+- `GET /api/v1/ip` - test get ip address
+- `GET /api/v1/latest` - latest registrations
+- `GET /api/v1/counter` - count registrations
+- `GET /api/v1/registrations` - list registrations
+- `POST /api/v1/accounts` - register new account
