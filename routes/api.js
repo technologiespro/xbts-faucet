@@ -7,6 +7,7 @@ const config = JsonFile.readFileSync('./config.json')
 const db = level('.faucet', {valueEncoding: 'json'})
 const DbUtils = require('../modules/dbUtils')
 const dbu = new DbUtils()
+const crypto = require('crypto');
 
 // db
 // 0x - reserved for counters
@@ -79,7 +80,7 @@ async function registerAccount(options, ip) {
         name: options.name,
     }
 
-    if (config.bts.broadcastTx) {
+    if (config.bts.broadcastTx && isAllowReg) {
         let tx = acc.newTx()
         tx.account_create(params)
         try {
@@ -123,7 +124,8 @@ router.get('/v1/latest', async function (req, res, next) {
 
 router.post('/v1/accounts', async function (req, res, next) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log('ip', ip)
+    let hashIp = crypto.createHash('md5').update(ip).digest("hex");
+    console.log('ip', ip, hashIp)
     // console.log('post', req.body)
     let result = false
     if (req.body.account) {
@@ -133,7 +135,7 @@ router.post('/v1/accounts', async function (req, res, next) {
             active: req.body.account.active_key,
             memo: req.body.account.memo_key,
             referrer: req.body.account.referrer,
-        }, ip)
+        }, hashIp)
     }
     console.log(result)
     await res.json(result)
