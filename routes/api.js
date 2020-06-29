@@ -91,7 +91,7 @@ async function registerAccount(options, ip) {
         try {
             let txResult = await tx.broadcast()
             console.log('tx Result', txResult[0].trx)
-            if (txResult[0].id) {
+            if (txResult) {
                 result = {
                     "status": "Account created",
                     "account": {
