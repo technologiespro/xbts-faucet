@@ -49,6 +49,8 @@ save and exit from nano editor: CTRL+O, CTRL+X
 
 `forever stop bin/www` for stopping
 
+default on http://localhost:48887, for use domain setup nginx
+
 ## Nginx Setup
 
 `sudo apt install nginx`
@@ -86,7 +88,7 @@ server {
 
 ## API
 
-- `GET https://faucet.xbts.io/api/v1/ip` - test get ip address
-- `POST https://faucet.xbts.io/api/v1/accounts` - register new account
-- `GET https://faucet.xbts.io/api/v1/latest` - latest registrations
+- `GET http://localhost:48887/api/v1/ip` - test get ip address
+- `POST http://localhost:48887/api/v1/accounts` - register new account
+- `GET http://localhost:48887/api/v1/latest` - latest registrations
 
