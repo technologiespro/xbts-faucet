@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const BitShares = require('btsdex')
-const JsonFile = require('jsonfile')
 const level = require('level')
+const JsonFile = require('jsonfile')
 const config = JsonFile.readFileSync('./config.json')
 const db = level('.faucet', {valueEncoding: 'json'})
 const DbUtils = require('../modules/dbUtils')
@@ -27,6 +27,22 @@ async function is_cheap_name(account_name) {
     return /[0-9-]/.test(account_name) || !/[aeiouy]/.test(account_name);
 }
 
+async function getReferrer(account_name) {
+    let result = referrer
+    let isLtm = false
+    try {
+        result = await BitShares.accounts[account_name]
+        isLtm = result.id === result.lifetime_referrer
+    } catch(e) {
+
+    }
+    if (!isLtm) {
+        result = referrer
+    }
+    return result
+}
+
+
 async function startAfterConnected() {
     //acc = await BitShares.login(config.bts.registrar, config.bts.password)
     console.log('-------------------------------------------------')
@@ -42,12 +58,14 @@ async function startAfterConnected() {
     console.log('assetId', assetId, config.bts.core_asset)
 
     referrer = await BitShares.accounts[config.bts.default_referrer]
+
     console.log('default referrer', referrer.id, referrer.name)
     console.log('premium names', config.bts.allowPremium)
     console.log('-------------------------------------------------')
 }
 
 async function registerAccount(options, ip) {
+    let userReferrer = referrer
     let isAllowReg = true
     let result = {
         "status": "Error registration account",
@@ -77,12 +95,17 @@ async function registerAccount(options, ip) {
         name: options.name,
     }
 
+    if (options.referrer) {
+        userReferrer = await getReferrer(options.referrer)
+        // console.log('user Referrer', userReferrer)
+    }
+
     if (config.bts.broadcastTx && isAllowReg) {
         let params = {
             fee: {amount: 0, asset_id: assetId},
             name: options.name,
             registrar: registrar.id,
-            referrer: referrer.id,
+            referrer: userReferrer.id,
             referrer_percent: config.bts.referrer_percent * 100,
             owner: {
                 weight_threshold: 1,
@@ -98,7 +121,7 @@ async function registerAccount(options, ip) {
             },
             options: {
                 memo_key: options.memo,
-                voting_account: referrer.id,
+                voting_account: registrar.id,
                 num_witness: 0,
                 num_committee: 0,
                 votes: []
