@@ -8,6 +8,7 @@
     "referrer_percent": 50,
     "core_asset": "BTS",
     "timeoutIp": 1800,
-    "broadcastTx": true
+    "broadcastTx": true,
+    "allowPremium": false
   }
 }
