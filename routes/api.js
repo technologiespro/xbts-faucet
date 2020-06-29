@@ -29,6 +29,7 @@ async function is_cheap_name(account_name) {
 
 async function startAfterConnected() {
     //acc = await BitShares.login(config.bts.registrar, config.bts.password)
+    console.log('-------------------------------------------------')
     acc = new BitShares(config.bts.registrar, config.bts.wif)
 
     registrar = await BitShares.accounts[config.bts.registrar]
@@ -43,6 +44,7 @@ async function startAfterConnected() {
     referrer = await BitShares.accounts[config.bts.default_referrer]
     console.log('default referrer', referrer.id, referrer.name)
     console.log('premium names', config.bts.allowPremium)
+    console.log('-------------------------------------------------')
 }
 
 async function registerAccount(options, ip) {
