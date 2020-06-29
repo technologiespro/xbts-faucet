@@ -1,6 +1,7 @@
 # Faucet XBTS DEX
 
 The faucet is used to pay the registration fee for new users.
+In order to preserve the user's ip in anonymity, hashing of his ip-address is used.
 
 ## NodeJS Setup (if necessary)
 
