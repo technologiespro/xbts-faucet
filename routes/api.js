@@ -24,12 +24,7 @@ async function startAfterConnected() {
 }
 
 async function registerAccount(options, ip) {
-    latestRegs[ip] = {
-        time: new Date.now(),
-        name: options.name,
-    }
-
-
+    let isAllowReg = true
     let result = {
         "status": "Error registration account",
         "account": {
@@ -39,6 +34,18 @@ async function registerAccount(options, ip) {
             "memo_key": options.memo,
         }
     }
+
+    if (latestRegs[ip]) {
+        let time = Math.floor(Date.now() / 1000) - config.bts.timeoutIp
+        isAllowReg = time > latestRegs[ip].time
+    }
+
+    console.log('isAllowReg', isAllowReg)
+
+    if (!isAllowReg) {
+        return result
+    }
+
     let params = {
         fee: {amount: 0, asset_id: "1.3.0"},
         name: options.name,
@@ -66,6 +73,11 @@ async function registerAccount(options, ip) {
         },
         extensions: []
     };
+
+    latestRegs[ip] = {
+        time: Math.floor(Date.now() / 1000),
+        name: options.name,
+    }
 
     if (config.bts.broadcastTx) {
         let tx = acc.newTx()
