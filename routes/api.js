@@ -103,7 +103,8 @@ async function registerAccount(options, ip) {
                 })
             }
         } catch (e) {
-            console.log('e', e)
+            //console.log('e', e)
+            result = {"error": {"base": ["Error registration new account"]}}
         }
     } else {
         result = {"error": {"base": ["Broadcast Tx off"]}}

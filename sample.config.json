@@ -7,7 +7,7 @@
     "default_referrer": "xbtsx",
     "referrer_percent": 50,
     "core_asset": "BTS",
-    "timeoutIp": 3600,
+    "timeoutIp": 1800,
     "broadcastTx": true
   }
 }
