@@ -9,6 +9,7 @@
     "core_asset": "BTS",
     "timeoutIp": 1800,
     "broadcastTx": true,
-    "allowPremium": false
+    "allowPremium": false,
+    "allowCustomerReferer": true
   }
 }

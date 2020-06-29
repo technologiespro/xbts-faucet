@@ -95,7 +95,7 @@ async function registerAccount(options, ip) {
         name: options.name,
     }
 
-    if (options.referrer) {
+    if (options.referrer && config.bts.allowCustomerReferer) {
         userReferrer = await getReferrer(options.referrer)
         // console.log('user Referrer', userReferrer)
     }
