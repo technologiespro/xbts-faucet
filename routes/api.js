@@ -16,8 +16,9 @@ const crypto = require('crypto');
 let acc = null
 let latestRegs = {}
 let countRegs = 0
-let accInfo = null
-let assetId = "0.0.0"
+let registrar = null
+let assetId = "1.3.0"
+let referrer = "xbtsx"
 
 BitShares.connect(config.bts.node);
 BitShares.subscribe('connected', startAfterConnected);
@@ -25,12 +26,18 @@ BitShares.subscribe('connected', startAfterConnected);
 async function startAfterConnected() {
     //acc = await BitShares.login(config.bts.registrar, config.bts.password)
     acc = new BitShares(config.bts.registrar, config.bts.wif)
-    accInfo = await BitShares.accounts[config.bts.registrar]
-    console.log('registrar', accInfo.id, accInfo.name)
+
+    registrar = await BitShares.accounts[config.bts.registrar]
+    console.log('registrar', registrar.id, registrar.name)
+
     countRegs = await dbu.dbGet(db, '0xREG') || 0
     console.log('countRegs', countRegs)
+
     assetId = (await BitShares.assets[config.bts.core_asset]).id
     console.log('assetId',assetId, config.bts.core_asset)
+
+    referrer = await BitShares.accounts[config.bts.default_referrer]
+    console.log('default referrer', referrer.id, referrer.name)
 }
 
 async function registerAccount(options, ip) {
@@ -67,8 +74,8 @@ async function registerAccount(options, ip) {
         let params = {
             fee: {amount: 0, asset_id: assetId},
             name: options.name,
-            registrar: acc.account.id,
-            referrer: acc.account.id,
+            registrar: registrar.id,
+            referrer: referrer.id,
             referrer_percent: config.bts.referrer_percent * 100,
             owner: {
                 weight_threshold: 1,
@@ -84,7 +91,7 @@ async function registerAccount(options, ip) {
             },
             options: {
                 memo_key: options.memo,
-                voting_account: acc.account.id,
+                voting_account: referrer.id,
                 num_witness: 0,
                 num_committee: 0,
                 votes: []
