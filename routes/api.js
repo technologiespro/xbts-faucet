@@ -29,51 +29,25 @@ async function registerAccount(options, ip) {
     let result = {
         "status": "Error registration account",
         "account": {
-            "name": options.name,
-            "owner_key": options.owner,
-            "active_key": options.active,
-            "memo_key": options.memo,
+            "name": null,
+            "owner_key": null,
+            "active_key": null,
+            "memo_key": null,
         }
     }
 
     if (latestRegs[ip]) {
         let time = Math.floor(Date.now() / 1000) - config.bts.timeoutIp
         isAllowReg = time > latestRegs[ip].time
+        console.log('hold sec', latestRegs[ip].time - time)
     }
 
     console.log('isAllowReg', isAllowReg)
 
     if (!isAllowReg) {
+        result = {"error": {"base": ["1 registration on " + config.bts.timeoutIp / 60 + " min"]}}
         return result
     }
-
-    let params = {
-        fee: {amount: 0, asset_id: "1.3.0"},
-        name: options.name,
-        registrar: acc.account.id,
-        referrer: acc.account.id,
-        referrer_percent: config.bts.referrer_percent * 100,
-        owner: {
-            weight_threshold: 1,
-            account_auths: [],
-            key_auths: [[options.owner, 1]],
-            address_auths: []
-        },
-        active: {
-            weight_threshold: 1,
-            account_auths: [],
-            key_auths: [[options.active, 1]],
-            address_auths: []
-        },
-        options: {
-            memo_key: options.memo,
-            voting_account: "1.2.5",
-            num_witness: 0,
-            num_committee: 0,
-            votes: []
-        },
-        extensions: []
-    };
 
     latestRegs[ip] = {
         time: Math.floor(Date.now() / 1000),
@@ -81,6 +55,33 @@ async function registerAccount(options, ip) {
     }
 
     if (config.bts.broadcastTx && isAllowReg) {
+        let params = {
+            fee: {amount: 0, asset_id: "1.3.0"},
+            name: options.name,
+            registrar: acc.account.id,
+            referrer: acc.account.id,
+            referrer_percent: config.bts.referrer_percent * 100,
+            owner: {
+                weight_threshold: 1,
+                account_auths: [],
+                key_auths: [[options.owner, 1]],
+                address_auths: []
+            },
+            active: {
+                weight_threshold: 1,
+                account_auths: [],
+                key_auths: [[options.active, 1]],
+                address_auths: []
+            },
+            options: {
+                memo_key: options.memo,
+                voting_account: "1.2.5",
+                num_witness: 0,
+                num_committee: 0,
+                votes: []
+            },
+            extensions: []
+        };
         let tx = acc.newTx()
         tx.account_create(params)
         try {
@@ -105,7 +106,7 @@ async function registerAccount(options, ip) {
             console.log('e', e)
         }
     } else {
-        result.status = "Broadcast Tx off"
+        result = {"error": {"base": ["Broadcast Tx off"]}}
     }
     return result
 }
