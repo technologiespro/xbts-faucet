@@ -3,7 +3,7 @@
   "bts": {
     "node": "wss://cloud.xbts.io/ws",
     "registrar": "",
-    "password": "",
+    "wif": "",
     "default_referrer": "xbtsx",
     "referrer_percent": 50,
     "core_asset": "BTS",

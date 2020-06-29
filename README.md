@@ -34,7 +34,7 @@ Set
 - port - app port number up to 65535
 - bts.node - public bitshares node
 - bts.registrar - registrar account
-- bts.password - registrar account password
+- bts.wif - registrar account private active key
 - bts.default_referrer - default referrer account name
 - bts.referrer_percent - referrer percent
 - bts.broadcastTx - default true, for testing set false

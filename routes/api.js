@@ -16,14 +16,16 @@ const crypto = require('crypto');
 let acc = null
 let latestRegs = {}
 let countRegs = 0
-
+let accInfo = null
 
 BitShares.connect(config.bts.node);
 BitShares.subscribe('connected', startAfterConnected);
 
 async function startAfterConnected() {
-    acc = await BitShares.login(config.bts.registrar, config.bts.password)
-    console.log('registrar', acc.account.id, acc.account.name)
+    //acc = await BitShares.login(config.bts.registrar, config.bts.password)
+    acc = new BitShares(config.bts.registrar, config.bts.wif)
+    accInfo = await BitShares.accounts[config.bts.registrar]
+    console.log('registrar', accInfo.id, accInfo.name)
     countRegs = await dbu.dbGet(db, '0xREG') || 0
     console.log('countRegs', countRegs)
 }
@@ -49,7 +51,7 @@ async function registerAccount(options, ip) {
     console.log('isAllowReg', isAllowReg)
 
     if (!isAllowReg) {
-        result = {"error": {"base": ["registration from 1 ip " + config.bts.timeoutIp / 60 + " min"]}}
+        result = {"error": {"base": ["Only one account per IP " + config.bts.timeoutIp / 60 + " min"]}}
         return result
     }
 
@@ -79,38 +81,38 @@ async function registerAccount(options, ip) {
             },
             options: {
                 memo_key: options.memo,
-                voting_account: "1.2.5",
+                voting_account: acc.account.id,
                 num_witness: 0,
                 num_committee: 0,
                 votes: []
             },
             extensions: []
         };
-        let tx = acc.newTx()
-        tx.account_create(params)
         try {
-            let txResult = await tx.broadcast()
-            console.log('tx Result', txResult[0].trx)
-            if (txResult) {
-                result = {
-                    "status": "Account created",
-                    "account": {
-                        "name": options.name,
-                        "owner_key": options.owner,
-                        "active_key": options.active,
-                        "memo_key": options.memo,
-                    }
-                }
-                await db.put('1x' + options.name, {
+            let tx = acc.newTx()
+            tx.account_create(params)
+            await tx.broadcast()
+            //console.log('tx Result', txResult[0].trx)
+            result = {
+                "status": "Account created",
+                "account": {
                     "name": options.name,
-                    "time": new Date.now(),
-                })
-                countRegs++
-                await db.put('0xREG', countRegs)
+                    "owner_key": options.owner,
+                    "active_key": options.active,
+                    "memo_key": options.memo,
+                }
             }
+            await db.put('1x' + options.name, {
+                "name": options.name,
+                "time": Math.floor(Date.now() / 1000),
+            })
+            countRegs++
+            await db.put('0xREG', countRegs)
+
+
         } catch (e) {
             //console.log('e', e)
-            result = {"error": {"base": ["Error registration new account"]}}
+            result = {"error": {"base": ["Error registration new account."]}}
         }
     } else {
         result = {"error": {"base": ["Broadcast Tx off"]}}
@@ -152,7 +154,7 @@ router.post('/v1/accounts', async function (req, res, next) {
 router.get('/v1/registrations', async function (req, res, next) {
     await res.json({
         total: await dbu.dbGet(db, '0xREG') || 0,
-        accounts: await dbu.dbArray(db, '1','2')
+        accounts: await dbu.dbArray(db, '1', '2')
     })
 })
 
