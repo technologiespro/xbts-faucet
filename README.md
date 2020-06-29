@@ -1,7 +1,7 @@
 # Faucet XBTS DEX
 
-The faucet is used to pay the registration fee for new users.
-In order to preserve the user's ip in anonymity, hashing of his ip-address is used.
+Faucet XBTS DEX is used to pay the registration fee for new Bitshares users.
+In order to ensure Anonymity of the user's IP, his IP-address is hashed.
 
 ## NodeJS Setup (if necessary)
 
