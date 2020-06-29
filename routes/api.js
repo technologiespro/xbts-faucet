@@ -23,6 +23,8 @@ let referrer = "xbtsx"
 BitShares.connect(config.bts.node);
 BitShares.subscribe('connected', startAfterConnected);
 
+
+
 async function startAfterConnected() {
     //acc = await BitShares.login(config.bts.registrar, config.bts.password)
     acc = new BitShares(config.bts.registrar, config.bts.wif)
@@ -150,7 +152,7 @@ router.post('/v1/accounts', async function (req, res, next) {
     let result = false
     if (req.body.account) {
         result = await registerAccount({
-            name: req.body.account.name,
+            name: (req.body.account.name).toLowerCase(),
             owner: req.body.account.owner_key,
             active: req.body.account.active_key,
             memo: req.body.account.memo_key,
