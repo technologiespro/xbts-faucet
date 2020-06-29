@@ -156,4 +156,10 @@ router.get('/v1/registrations', async function (req, res, next) {
     })
 })
 
+router.get('/v1/counter', async function (req, res, next) {
+    await res.json({
+        registrations: await dbu.dbGet(db, '0xREG') || 0,
+    })
+})
+
 module.exports = router;
