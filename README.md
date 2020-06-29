@@ -40,7 +40,7 @@ Set
 
 save and exit from nano editor: CTRL+O, CTRL+X
 
-## Start
+## Start/Stop
 
 `npm start` for testing
 
