@@ -23,7 +23,9 @@ let referrer = "xbtsx"
 BitShares.connect(config.bts.node);
 BitShares.subscribe('connected', startAfterConnected);
 
-
+function is_cheap_name(account_name) {
+    return /[0-9-]/.test(account_name) || !/[aeiouy]/.test(account_name);
+}
 
 async function startAfterConnected() {
     //acc = await BitShares.login(config.bts.registrar, config.bts.password)
