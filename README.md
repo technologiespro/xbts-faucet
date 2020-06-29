@@ -31,7 +31,7 @@ nano config.json
 
 Set
 
-- port - app port number up to 65535
+- port - app port number default 48887 up to 65535
 - bts.node - public bitshares node
 - bts.registrar - registrar account
 - bts.wif - registrar account private active key
