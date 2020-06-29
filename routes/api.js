@@ -80,10 +80,8 @@ async function registerAccount(options, ip) {
     if (latestRegs[ip]) {
         let time = Math.floor(Date.now() / 1000) - config.bts.timeoutIp
         isAllowReg = time > latestRegs[ip].time
-        console.log('hold sec', latestRegs[ip].time - time)
+        //console.log('hold sec', latestRegs[ip].time - time)
     }
-
-    console.log('isAllowReg', isAllowReg)
 
     if (!isAllowReg) {
         result = {"error": {"base": ["Only one account per IP " + config.bts.timeoutIp / 60 + " min"]}}
@@ -97,7 +95,6 @@ async function registerAccount(options, ip) {
 
     if (options.referrer && config.bts.allowCustomerReferer) {
         userReferrer = await getReferrer(options.referrer)
-        // console.log('user Referrer', userReferrer)
     }
 
     if (config.bts.broadcastTx && isAllowReg) {
@@ -132,7 +129,6 @@ async function registerAccount(options, ip) {
             let tx = acc.newTx()
             tx.account_create(params)
             await tx.broadcast()
-            //console.log('tx Result', txResult[0].trx)
             result = {
                 "status": "Account created",
                 "account": {
@@ -176,15 +172,12 @@ router.post('/v1/accounts', async function (req, res, next) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     let hashIp = crypto.createHash('md5').update(ip).digest("hex");
     // console.log('ip', ip, hashIp)
-    // console.log('post', req.body)
     let result = false
     let err = false
     let name = (req.body.account.name).toLowerCase()
-
     if (!config.bts.allowPremium) {
         err = !(await is_cheap_name(name)) // is not cheap name = true
     }
-
     if (req.body.account && !err) {
         result = await registerAccount({
             name: name,
@@ -196,7 +189,6 @@ router.post('/v1/accounts', async function (req, res, next) {
     } else {
         result = {"error": {"base": ["Only standard accounts names allowed"]}}
     }
-    //console.log(result)
     await res.json(result)
 });
 
