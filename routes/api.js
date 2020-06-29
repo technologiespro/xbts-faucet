@@ -15,6 +15,8 @@ const crypto = require('crypto');
 
 let acc = null
 let latestRegs = {}
+let countRegs = 0
+
 
 BitShares.connect(config.bts.node);
 BitShares.subscribe('connected', startAfterConnected);
@@ -22,6 +24,8 @@ BitShares.subscribe('connected', startAfterConnected);
 async function startAfterConnected() {
     acc = await BitShares.login(config.bts.registrar, config.bts.password)
     console.log('registrar', acc.account.id, acc.account.name)
+    countRegs = await dbu.dbGet(db, '0xREG') || 0
+    console.log('countRegs', countRegs)
 }
 
 async function registerAccount(options, ip) {
@@ -101,6 +105,8 @@ async function registerAccount(options, ip) {
                     "name": options.name,
                     "time": new Date.now(),
                 })
+                countRegs++
+                await db.put('0xREG', countRegs)
             }
         } catch (e) {
             //console.log('e', e)
@@ -144,7 +150,10 @@ router.post('/v1/accounts', async function (req, res, next) {
 });
 
 router.get('/v1/registrations', async function (req, res, next) {
-    await res.json(await dbu.dbArray(db, '1','2'))
+    await res.json({
+        total: await dbu.dbGet(db, '0xREG') || 0,
+        accounts: await dbu.dbArray(db, '1','2')
+    })
 })
 
 module.exports = router;
