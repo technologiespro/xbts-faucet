@@ -39,6 +39,7 @@ Set
 - bts.referrer_percent - referrer percent
 - bts.broadcastTx - default true, for testing set false
 - bts.timeoutIp - default 1800 sec (30 min) registration time on 1 ip
+- bts.allowPremium - default false, registration premium names
 
 save and exit from nano editor: CTRL+O, CTRL+X
 
