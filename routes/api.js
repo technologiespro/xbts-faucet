@@ -17,6 +17,7 @@ let acc = null
 let latestRegs = {}
 let countRegs = 0
 let accInfo = null
+let assetId = "0.0.0"
 
 BitShares.connect(config.bts.node);
 BitShares.subscribe('connected', startAfterConnected);
@@ -28,6 +29,8 @@ async function startAfterConnected() {
     console.log('registrar', accInfo.id, accInfo.name)
     countRegs = await dbu.dbGet(db, '0xREG') || 0
     console.log('countRegs', countRegs)
+    assetId = (await BitShares.assets[config.bts.core_asset]).id
+    console.log('assetId',assetId, config.bts.core_asset)
 }
 
 async function registerAccount(options, ip) {
@@ -62,7 +65,7 @@ async function registerAccount(options, ip) {
 
     if (config.bts.broadcastTx && isAllowReg) {
         let params = {
-            fee: {amount: 0, asset_id: "1.3.0"},
+            fee: {amount: 0, asset_id: assetId},
             name: options.name,
             registrar: acc.account.id,
             referrer: acc.account.id,
