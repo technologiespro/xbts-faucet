@@ -44,7 +44,9 @@ save and exit from nano editor: CTRL+O, CTRL+X
 
 `npm start` for testing
 
-`sh restart.sh` for background running
+`forever start bin/www` for background running
+
+`forever stop bin/www` for stopping
 
 ## Nginx Setup
 

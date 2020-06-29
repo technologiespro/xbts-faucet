@@ -45,7 +45,7 @@ async function registerAccount(options, ip) {
     console.log('isAllowReg', isAllowReg)
 
     if (!isAllowReg) {
-        result = {"error": {"base": ["1 registration on " + config.bts.timeoutIp / 60 + " min"]}}
+        result = {"error": {"base": ["registration from 1 ip " + config.bts.timeoutIp / 60 + " min"]}}
         return result
     }
 
