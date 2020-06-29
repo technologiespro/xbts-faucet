@@ -79,3 +79,9 @@ server {
 - `sudo nginx -t`
 - `sudo service nginx restart`
 - for ssl install nginx certbot, instruction here https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx
+
+## API
+
+- `GET https://faucet.xbts.io/api/v1/ip` - test get ip address
+- `POST https://faucet.xbts.io/api/v1/accounts` - register new account
+
