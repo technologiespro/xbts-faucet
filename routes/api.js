@@ -143,7 +143,7 @@ router.post('/v1/accounts', async function (req, res, next) {
     await res.json(result)
 });
 
-router.post('/v1/registrations', async function (req, res, next) {
+router.get('/v1/registrations', async function (req, res, next) {
     await res.json(await dbu.dbArray(db, '1','2'))
 })
 
