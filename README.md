@@ -96,3 +96,8 @@ server {
 - `GET /api/v1/counter` - count registrations
 - `GET /api/v1/registrations` - list registrations
 - `POST /api/v1/accounts` - register new account
+
+
+## Vote for
+
+witness: *xbtsio-wallet*
