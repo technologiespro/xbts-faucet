@@ -11,6 +11,9 @@
     "broadcastTx": true,
     "allowPremium": false,
     "allowCustomerReferer": true,
-    "sendCoins": 0
+    "sendAfterReg": {
+      "asset": "BTS",
+      "amount": 0
+    }
   }
 }
