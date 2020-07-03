@@ -23,8 +23,14 @@ let referrer = config.bts.default_referrer
 BitShares.connect(config.bts.node);
 BitShares.subscribe('connected', startAfterConnected);
 
-async function transfer(account, amount, asset, ) {
+async function transfer(recipient, amount, asset, ) {
+    let result = null
+    try {
+        result = await acc.transfer(recipient, asset, amount);
+    } catch(e) {
 
+    }
+    return (result)
 }
 
 
