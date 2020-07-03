@@ -18,7 +18,7 @@ let latestRegs = {}
 let countRegs = 0
 let registrar = null
 let assetId = "1.3.0"
-let referrer = "xbtsx"
+let referrer = config.bts.default_referrer
 
 BitShares.connect(config.bts.node);
 BitShares.subscribe('connected', startAfterConnected);
