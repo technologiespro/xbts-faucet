@@ -10,6 +10,7 @@
     "timeoutIp": 1800,
     "broadcastTx": true,
     "allowPremium": false,
-    "allowCustomerReferer": true
+    "allowCustomerReferer": true,
+    "sendCoins": 0
   }
 }
