@@ -23,6 +23,11 @@ let referrer = config.bts.default_referrer
 BitShares.connect(config.bts.node);
 BitShares.subscribe('connected', startAfterConnected);
 
+async function transfer(account, amount, asset, ) {
+
+}
+
+
 async function is_cheap_name(account_name) {
     return /[0-9-]/.test(account_name) || !/[aeiouy]/.test(account_name);
 }
