@@ -23,11 +23,11 @@ let referrer = config.bts.default_referrer
 BitShares.connect(config.bts.node);
 BitShares.subscribe('connected', startAfterConnected);
 
-async function transfer(recipient, amount, asset, ) {
+async function transfer(recipient, amount, asset,) {
     let result = null
     try {
         result = await acc.transfer(recipient, asset, amount);
-    } catch(e) {
+    } catch (e) {
 
     }
     return (result)
@@ -44,7 +44,7 @@ async function getReferrer(account_name) {
     try {
         result = await BitShares.accounts[account_name]
         isLtm = result.id === result.lifetime_referrer
-    } catch(e) {
+    } catch (e) {
 
     }
     if (!isLtm) {
@@ -156,6 +156,11 @@ async function registerAccount(options, ip) {
             countRegs++
             await db.put('0xREG', countRegs)
 
+            if (config.bts.sendAfterReg.amount > 0) {
+                setTimeout(async () => {
+                    await transfer(options.name, config.bts.sendAfterReg.amount, config.bts.sendAfterReg.asset)
+                }, 15000)
+            }
 
         } catch (e) {
             //console.log('e', e)
