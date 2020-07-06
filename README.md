@@ -33,8 +33,8 @@ Set
 
 - port - app port number default 48887 up to 65535
 - bts.node - public bitshares api node
-- bts.registrar - registrar account
-- bts.wif - registrar account private active key
+- bts.registrar - registrar BitShares account
+- bts.wif - registrar BitShares account private active key
 - bts.default_referrer - default referrer account name
 - bts.referrer_percent - referrer percent
 - bts.broadcastTx - default true, for testing set false
@@ -49,6 +49,8 @@ save and exit from nano editor: CTRL+O, CTRL+X
 
 ## Start/Stop
 
+`cd nodejs-faucet`
+
 `npm start` for testing
 
 `forever start bin/www` for background running
@@ -56,6 +58,12 @@ save and exit from nano editor: CTRL+O, CTRL+X
 `forever stop bin/www` for stopping
 
 default on http://localhost:48887, for use domain setup nginx
+
+## Logs
+
+`forever list` - get log url
+
+`tail -f /home/yourusername/.forever/T9Rc.log` -
 
 ## Nginx Setup
 
