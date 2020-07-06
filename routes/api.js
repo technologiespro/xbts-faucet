@@ -72,6 +72,7 @@ async function startAfterConnected() {
 
     console.log('default referrer', referrer.id, referrer.name)
     console.log('premium names', config.bts.allowPremium)
+    console.log('send on new account', config.bts.sendAfterReg.amount, config.bts.sendAfterReg.asset)
     console.log('-------------------------------------------------')
 }
 

@@ -1,6 +1,6 @@
-# Faucet XBTS DEX
+# BitShares Faucet NodeJS
 
-Faucet XBTS DEX is used to pay the registration fee for new Bitshares users.
+Faucet is used to pay the registration fee for new BitShares users.
 In order to ensure Anonymity of the user's IP, his IP-address is hashed.
 
 ## NodeJS Setup (if necessary)
@@ -18,8 +18,8 @@ npm install -g npm forever grunt-cli
 
 ## Install App
 ```
-git clone https://github.com/technologiespro/xbts-faucet.git
-cd xbts-faucet
+git clone https://github.com/technologiespro/nodejs-faucet.git
+cd nodejs-faucet
 npm install
 ```
 
