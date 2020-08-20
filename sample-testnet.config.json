@@ -1,19 +1,19 @@
 {
   "port": 48887,
   "bts": {
-    "node": "wss://cloud.xbts.io/ws",
-    "registrar": "xbtsio-wallet",
+    "node": "wss://testnet.xbts.io/ws",
+    "registrar": "your_bitshares_testnet_account",
     "wif": "your_private_active_key_here",
-    "default_referrer": "xbtsx",
+    "default_referrer": "your_bitshares_testnet_account",
     "referrer_percent": 50,
-    "core_asset": "BTS",
+    "core_asset": "TEST",
     "timeoutIp": 1800,
     "broadcastTx": true,
     "allowPremium": false,
     "allowCustomerReferer": true,
     "sendAfterReg": {
-      "asset": "BTS",
-      "amount": 0
+      "asset": "TEST",
+      "amount": 10
     }
   }
 }

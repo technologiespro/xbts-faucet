@@ -42,8 +42,8 @@ Set
 - bts.allowPremium - default false, registration premium names
 - bts.allowCustomerReferer - default true, false - always use referrer from config
 
-- bts.sendAfterReg.asset - asset name for send to new registered user
-- bts.sendAfterReg.amount - asset amount for send to new registered user
+- bts.sendAfterReg.asset - asset name for send to new registered user (ex. XBTSX.STH)
+- bts.sendAfterReg.amount - asset amount for send to new registered user (ex. 10)
 
 save and exit from nano editor: CTRL+O, CTRL+X
 
