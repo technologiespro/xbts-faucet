@@ -1,8 +1,8 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+//var logger = require('morgan');
 
 const jsonFile = require('jsonfile');
 process.env.PORT = jsonFile.readFileSync('./config.json').port;
@@ -25,7 +25,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

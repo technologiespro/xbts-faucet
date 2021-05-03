@@ -56,29 +56,29 @@ async function getReferrer(account_name) {
 
 async function startAfterConnected() {
     //acc = await BitShares.login(config.bts.registrar, config.bts.password)
-    console.log('-------------------------------------------------')
-    acc = new BitShares(config.bts.registrar, config.bts.wif)
+    console.log('-------------------------------------------------');
+    acc = new BitShares(config.bts.registrar, config.bts.wif);
 
-    registrar = await BitShares.accounts[config.bts.registrar]
-    console.log('registrar', registrar.id, registrar.name)
+    registrar = await BitShares.accounts[config.bts.registrar];
+    console.log('registrar', registrar.id, registrar.name);
 
-    countRegs = await dbu.dbGet(db, '0xREG') || 0
-    console.log('countRegs', countRegs)
+    countRegs = await dbu.dbGet(db, '0xREG') || 0;
+    console.log('countRegs', countRegs);
 
-    assetId = (await BitShares.assets[config.bts.core_asset]).id
-    console.log('assetId', assetId, config.bts.core_asset)
+    assetId = (await BitShares.assets[config.bts.core_asset]).id;
+    console.log('assetId', assetId, config.bts.core_asset);
 
-    referrer = await BitShares.accounts[config.bts.default_referrer]
+    referrer = await BitShares.accounts[config.bts.default_referrer];
 
-    console.log('default referrer', referrer.id, referrer.name)
-    console.log('premium names', config.bts.allowPremium)
-    console.log('send on new account', config.bts.sendAfterReg.amount, config.bts.sendAfterReg.asset)
+    console.log('default referrer', referrer.id, referrer.name);
+    console.log('premium names', config.bts.allowPremium);
+    console.log('send on new account', config.bts.sendAfterReg.amount, config.bts.sendAfterReg.asset);
     console.log('-------------------------------------------------')
 }
 
 async function registerAccount(options, ip) {
-    let userReferrer = referrer
-    let isAllowReg = true
+    let userReferrer = referrer;
+    let isAllowReg = true;
     let result = {
         "status": "Error registration account",
         "account": {
@@ -87,23 +87,23 @@ async function registerAccount(options, ip) {
             "active_key": null,
             "memo_key": null,
         }
-    }
+    };
 
     if (latestRegs[ip]) {
-        let time = Math.floor(Date.now() / 1000) - config.bts.timeoutIp
+        let time = Math.floor(Date.now() / 1000) - config.bts.timeoutIp;
         isAllowReg = time > latestRegs[ip].time
         //console.log('hold sec', latestRegs[ip].time - time)
     }
 
     if (!isAllowReg) {
-        result = {"error": {"base": ["Only one account per IP " + config.bts.timeoutIp / 60 + " min"]}}
+        result = {"error": {"base": ["Only one account per IP " + config.bts.timeoutIp / 60 + " min"]}};
         return result
     }
 
     latestRegs[ip] = {
         time: Math.floor(Date.now() / 1000),
         name: options.name,
-    }
+    };
 
     if (options.referrer && config.bts.allowCustomerReferer) {
         userReferrer = await getReferrer(options.referrer)
@@ -138,9 +138,9 @@ async function registerAccount(options, ip) {
             extensions: []
         };
         try {
-            let tx = acc.newTx()
-            tx.account_create(params)
-            await tx.broadcast()
+            let tx = acc.newTx();
+            tx.account_create(params);
+            await tx.broadcast();
             result = {
                 "status": "Account created",
                 "account": {
@@ -149,13 +149,13 @@ async function registerAccount(options, ip) {
                     "active_key": options.active,
                     "memo_key": options.memo,
                 }
-            }
+            };
             await db.put('1x' + options.name, {
                 "name": options.name,
                 "time": Math.floor(Date.now() / 1000),
-            })
-            countRegs++
-            await db.put('0xREG', countRegs)
+            });
+            countRegs++;
+            await db.put('0xREG', countRegs);
 
             if (config.bts.sendAfterReg.amount > 0) {
                 setTimeout(async () => {
@@ -179,19 +179,19 @@ router.get('/v1/ip', async function (req, res, next) {
     await res.json({
         ip: ip,
     })
-})
+});
 
 router.get('/v1/latest', async function (req, res, next) {
     await res.json(latestRegs)
-})
+});
 
 router.post('/v1/accounts', async function (req, res, next) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     let hashIp = crypto.createHash('md5').update(ip).digest("hex");
     // console.log('ip', ip, hashIp)
-    let result = false
-    let err = false
-    let name = (req.body.account.name).toLowerCase()
+    let result = false;
+    let err = false;
+    let name = (req.body.account.name).toLowerCase();
     if (!config.bts.allowPremium) {
         err = !(await is_cheap_name(name)) // is not cheap name = true
     }
@@ -214,12 +214,12 @@ router.get('/v1/registrations', async function (req, res, next) {
         total: await dbu.dbGet(db, '0xREG') || 0,
         accounts: await dbu.dbArray(db, '1', '2')
     })
-})
+});
 
 router.get('/v1/counter', async function (req, res, next) {
     await res.json({
         registrations: await dbu.dbGet(db, '0xREG') || 0,
     })
-})
+});
 
 module.exports = router;
