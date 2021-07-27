@@ -38,11 +38,15 @@ async function is_cheap_name(account_name) {
     return /[0-9-]/.test(account_name) || !/[aeiouy]/.test(account_name);
 }
 
+function is_bts(account_name) {
+    return account_name.indexOf('bts') !== -1;
+}
+
 async function getReferrer(account_name) {
-    let result = referrer
-    let isLtm = false
+    let result = referrer;
+    let isLtm = false;
     try {
-        result = await BitShares.accounts[account_name]
+        result = await BitShares.accounts[account_name];
         isLtm = result.id === result.lifetime_referrer
     } catch (e) {
 
@@ -193,7 +197,8 @@ router.post('/v1/accounts', async function (req, res, next) {
     let err = false;
     let name = (req.body.account.name).toLowerCase();
     if (!config.bts.allowPremium) {
-        err = !(await is_cheap_name(name)) // is not cheap name = true
+        err = !(await is_cheap_name(name)); // is not cheap name = true
+        err = !(await is_bts(name));
     }
     if (req.body.account && !err) {
         result = await registerAccount({
