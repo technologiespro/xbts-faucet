@@ -38,10 +38,6 @@ async function is_cheap_name(account_name) {
     return /[0-9-]/.test(account_name) || !/[aeiouy]/.test(account_name);
 }
 
-function is_bts(account_name) {
-    return account_name.indexOf('bts') !== -1;
-}
-
 async function getReferrer(account_name) {
     let result = referrer;
     let isLtm = false;
@@ -177,6 +173,10 @@ async function registerAccount(options, ip) {
     return result
 }
 
+function is_bts(account_name, contain) {
+    return account_name.indexOf(contain) !== -1;
+}
+
 //test ip
 router.get('/v1/ip', async function (req, res, next) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -197,8 +197,7 @@ router.post('/v1/accounts', async function (req, res, next) {
     let err = false;
     let name = (req.body.account.name).toLowerCase();
     if (!config.bts.allowPremium) {
-        err = !(await is_cheap_name(name)); // is not cheap name = true
-        err = !(await is_bts(name));
+        err = !(await is_cheap_name(name))// is not cheap name = true
     }
     if (req.body.account && !err) {
         result = await registerAccount({
