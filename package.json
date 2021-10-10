@@ -1,6 +1,6 @@
 {
   "name": "nodejs-faucet",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "NodeJS BitShares Faucet",
   "author": "technologiespro",
   "homepage": "https://github.com/technologiespro/nodejs-faucet",
