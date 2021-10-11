@@ -109,6 +109,10 @@ server {
 - `POST /api/v1/accounts` - register new account
 
 
+## SSL
+
+please visit https://certbot.eff.org/lets-encrypt/ubuntuxenial-nginx
+
 ## Vote for
 
 witness: *xbtsio-wallet*
