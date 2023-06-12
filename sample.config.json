@@ -1,5 +1,6 @@
 {
   "port": 48887,
+  "password": "password_for_private_stats",
   "bts": {
     "node": "wss://cloud.xbts.io/ws",
     "registrar": "xbtsio-wallet",
@@ -14,6 +15,15 @@
     "sendAfterReg": {
       "asset": "BTS",
       "amount": 0
-    }
+    },
+    "blackListNames": [
+      "bts",
+      "binance",
+      "poloni",
+      "huobi",
+      "coinex",
+      "bitshares",
+      "deposit"
+    ]
   }
 }
