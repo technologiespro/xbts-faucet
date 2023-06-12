@@ -59,11 +59,13 @@ save and exit from nano editor: CTRL+O, CTRL+X
 
 default on http://localhost:48887, for use domain setup nginx
 
-## Logs
+## Logs & Shell
 
-`forever list` - get log url
+`sh start.sh` - faucet start
 
-`tail -f /home/yourusername/.forever/T9Rc.log` -
+`sh stop.sh` - faucet stop
+
+`sh log.sh` - faucet log
 
 ## Nginx Setup
 
