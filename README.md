@@ -47,25 +47,23 @@ Set
 
 save and exit from nano editor: CTRL+O, CTRL+X
 
-## Start/Stop
+## Start/Stop, Logs & Shell
 
 `cd nodejs-faucet`
 
 `npm start` for testing
 
-`forever start bin/www` for background running
+or 
 
-`forever stop bin/www` for stopping
-
-default on http://localhost:48887, for use domain setup nginx
-
-## Logs & Shell
+`cd nodejs-faucet`
 
 `sh start.sh` - faucet start
 
 `sh stop.sh` - faucet stop
 
 `sh log.sh` - faucet log
+
+default on http://localhost:48887, for use domain setup nginx
 
 ## Nginx Setup
 
