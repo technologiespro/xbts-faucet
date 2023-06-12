@@ -103,9 +103,8 @@ server {
 ## API
 
 - `GET /api/v1/ip` - test get ip address
-- `GET /api/v1/latest` - latest registrations
-- `GET /api/v1/counter` - count registrations
-- `GET /api/v1/registrations` - list registrations
+- `GET /api/v1/counter` - total registrations
+- `GET /api/v1/registrations/your_any_password_in_config` - list registrations
 - `POST /api/v1/accounts` - register new account
 
 
