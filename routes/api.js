@@ -89,6 +89,7 @@ async function registerAccount(options, ip) {
         }
     };
 
+
     if (latestRegs[ip]) {
         let time = Math.floor(Date.now() / 1000) - config.bts.timeoutIp;
         isAllowReg = time > latestRegs[ip].time
@@ -103,10 +104,23 @@ async function registerAccount(options, ip) {
     latestRegs[ip] = {
         time: Math.floor(Date.now() / 1000),
         name: options.name,
+        ip: ip,
     };
+
+    let dt = new Date();
+    console.log(dt.toString().substring(3,10), options.name, ip);
 
     if (options.referrer && config.bts.allowCustomerReferer) {
         userReferrer = await getReferrer(options.referrer)
+    }
+
+    for (let i=0; i < config.bts.blackListNames.length; i++) {
+        if (options.name.toLowerCase().includes(config.bts.blackListNames[i])) {
+            isAllowReg = false;
+            result = {"error": {"base": ["name not allowed"]}};
+            console.log('err: name not allowed');
+            return result
+        }
     }
 
     if (config.bts.broadcastTx && isAllowReg) {
@@ -153,6 +167,7 @@ async function registerAccount(options, ip) {
             await db.put('1x' + options.name, {
                 "name": options.name,
                 "time": Math.floor(Date.now() / 1000),
+                "ip": ip
             });
             countRegs++;
             await db.put('0xREG', countRegs);
@@ -186,12 +201,20 @@ router.get('/v1/ip', async function (req, res, next) {
 });
 
 router.get('/v1/latest', async function (req, res, next) {
-    await res.json(latestRegs)
+    await res.json('accounts not found');
+});
+
+router.get('/v1/latest/:pass', async function (req, res, next) {
+    let result = null;
+    if (req.params['pass'] === config['password']) {
+        result = latestRegs;
+    }
+    await res.json(result);
 });
 
 router.post('/v1/accounts', async function (req, res, next) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    let hashIp = crypto.createHash('md5').update(ip).digest("hex");
+    //let hashIp = crypto.createHash('md5').update(ip).digest("hex");
     // console.log('ip', ip, hashIp)
     let result = false;
     let err = false;
@@ -206,18 +229,27 @@ router.post('/v1/accounts', async function (req, res, next) {
             active: req.body.account.active_key,
             memo: req.body.account.memo_key,
             referrer: req.body.account.referrer,
-        }, hashIp)
+        //}, hashIp)
+        }, ip)
     } else {
         result = {"error": {"base": ["Only standard accounts names allowed"]}}
     }
     await res.json(result)
 });
 
+router.get('/v1/registrations/:pass', async function (req, res, next) {
+    let result = null;
+    if (req.params['pass'] === config['password']) {
+        result = {
+            total: await dbu.dbGet(db, '0xREG') || 0,
+            accounts: await dbu.dbArray(db, '1', '2')
+        };
+    }
+    await res.json(result)
+});
+
 router.get('/v1/registrations', async function (req, res, next) {
-    await res.json({
-        total: await dbu.dbGet(db, '0xREG') || 0,
-        accounts: await dbu.dbArray(db, '1', '2')
-    })
+    await res.json('accounts not found');
 });
 
 router.get('/v1/counter', async function (req, res, next) {
