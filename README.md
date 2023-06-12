@@ -63,7 +63,7 @@ or
 
 `sh log.sh` - faucet log
 
-default on http://localhost:48887, for use domain setup nginx
+default on http://server_ip:48887, for use domain setup nginx
 
 ## Nginx Setup
 
